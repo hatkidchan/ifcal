@@ -1,0 +1,7 @@
+# ifcal - International Fixed Calendar
+IFC is a fixed-type calendar that has 13 months with 28 days each.
+Extra day is added as a holiday at the end of each year.
+If current year is leap year, leap day is added as June 29.
+
+
+For more information, check https://en.wikipedia.org/wiki/International_Fixed_Calendar
