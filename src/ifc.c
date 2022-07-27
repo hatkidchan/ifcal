@@ -45,22 +45,75 @@ const char *ifc_weekday_name_short(IFCDate date)
 
 int ifc_day(IFCDate date)
 {
-  return 0; // TODO
+  int day = date.day;
+  if (day < 0 || day > 366)
+    return -1;
+  if (ifc_is_leap(date))
+  {
+    if (day == 169)
+      return 29;
+    if (day == 366)
+      return 29;
+    if (day == 365)
+      return 28;
+    if (day > 169) day--;
+  }
+  else if (day == 366)
+    return -1;
+  else if (day == 365)
+    return 29;
+  int rem;
+  if ((rem = day % 28) != 0)
+    return rem;
+  return 28;
 }
 
 int ifc_week(IFCDate date)
 {
-  return 0; // TODO
+  int day = date.day;
+  if (ifc_is_leap(date))
+  {
+    // Year Day or Leap Day are not part of IFC week
+    if (day == 169 || day == 366)
+      return -1;
+    if (day > 169) day--;
+  }
+  return day / 7;
 }
 
 int ifc_weekday(IFCDate date)
 {
-  return 0; // TODO
+  int day = date.day;
+  if (ifc_is_leap(date))
+  {
+    if (day == 169 || day == 366)
+      return 0;
+    if (day > 169) day--;
+  }
+  else if (day == 365)
+    return 0;
+
+  return day % 7;
 }
 
 int ifc_month(IFCDate date)
 {
-  return 0; // TODO
+  int day = date.day;
+  if (day < 0 || day > 366)
+    return -1;
+  if (ifc_is_leap(date))
+  {
+    if (day == 169)
+      return 6;
+    if (day > 169) day--;
+  }
+
+  if (day == 365 || day == 366)
+    return 13;
+
+  int month = day / 28, mday = day % 28;
+
+  return (day == 0 && month != 13) ? month : month + 1;
 }
 
 int ifc_is_leap(IFCDate date)
